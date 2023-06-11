@@ -1,0 +1,13 @@
+# Paths
+.vscode/
+bin/
+tst/
+
+# Files
+*.o
+*.a
+*.so
+*.obj
+*.lib
+*.dll
+*.exe
