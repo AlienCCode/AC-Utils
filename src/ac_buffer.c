@@ -46,18 +46,16 @@ BUFFER *BUF_FromString(CHAR *str) {
 	return temp;
 }
 
-BUFFER *BUF_FromFile(CHAR *path) {
+BUFFER *BUF_FromFile(CHAR *path, BOOLEAN text) {
 	// Initialize file handle and structure
 	if (!path) { return NULL; }
-	FILE *file = fopen(path, "rb");
+	FILE *file = fopen(path, !text ? "rb" : "r");
 	if (!file) { return NULL; }
 	BUFFER *temp = malloc(sizeof(BUFFER));
 	if (!temp) { fclose(file); return NULL; }
+	// Get length, don't alloc if length is zero
 	temp->len = 0; temp->cap = 1;
-	// Read file, don't alloc if length is zero
-	while (fgetc(file) != EOF) {
-		if (++temp->len == UI64_MAX) { break; }
-	}
+	while (fgetc(file) != EOF) { ++temp->len; }
 	if (!temp->len) { temp->data = NULL; return temp; }
 	// Otherwise, alloc to capacity
 	while (temp->cap < temp->len) { temp->cap <<= 1; }

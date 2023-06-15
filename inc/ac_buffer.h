@@ -30,7 +30,7 @@ extern BUFFER *BUF_FromString(CHAR *str);
 // Creates a BUFFER from the contents of a file.
 // \param path The file to read.
 // \return A BUFFER on success, NULL on failure.
-extern BUFFER *BUF_FromFile(CHAR *path);
+extern BUFFER *BUF_FromFile(CHAR *path, BOOLEAN text);
 
 // Converts a BUFFER to an array of bytes.
 // \param buf The source BUFFER to use.
