@@ -13,23 +13,23 @@ typedef struct {
 // Creates a BUFFER.
 // \param len The length to initalize to.
 // \param val The value to fill in. If len is 0, then ignore this.
-// \return A BUFFER on success, NULL on failure.
+// \return A BUFFER pointer on success, NULL on failure.
 extern BUFFER *BUF_Create(UI64 len, UI8 val);
 
 // Creates a BUFFER from a pointer.
 // \param ptr The pointer to get the data from.
 // \param len The amount of bytes to retrieve.
-// \return A BUFFER on success, NULL on failure.
+// \return A BUFFER pointer on success, NULL on failure.
 extern BUFFER *BUF_FromPointer(UI8 *ptr, UI64 len);
 
 // Creates a BUFFER from a string.
 // \param str The string to get the data from.
-// \return A BUFFER on success, NULL on failure.
+// \return A BUFFER pointer on success, NULL on failure.
 extern BUFFER *BUF_FromString(CHAR *str);
 
 // Creates a BUFFER from the contents of a file.
 // \param path The file to read.
-// \return A BUFFER on success, NULL on failure.
+// \return A BUFFER pointer on success, NULL on failure.
 extern BUFFER *BUF_FromFile(CHAR *path, BOOLEAN text);
 
 // Converts a BUFFER to an array of bytes.
@@ -80,7 +80,7 @@ extern UI8 BUF_Shift(BUFFER *buf);
 // \return On success, returns TRUE. Otherwise, returns FALSE.
 extern BOOLEAN BUF_Insert(BUFFER *buf, UI64 ind, UI8 val);
 
-// Removes byte from a BUFFER.
+// Removes a byte from a BUFFER.
 // \param buf The BUFFER to operate on.
 // \param ind The index to retrieve from.
 // \return Returns the value located at ind. On failure returns 0.
@@ -103,8 +103,8 @@ extern BOOLEAN BUF_Concat(BUFFER *dst, BUFFER *src);
 // \param buf0 The first BUFFER to compare.
 // \param buf1 The second BUFFER to compare.
 // \return If they are equal in both content and length, returns 0.
-// \return If buf0 has a lower value or is shorter, returns -1.
-// \return If buf1 has a lower value or is shorter, returns 1.
+// \return If buf0 has a higher value or is longer, returns -1.
+// \return If buf1 has a higher value or is longer, returns 1.
 // \return On failure returns SI8_MIN.
 extern SI8 BUF_Compare(BUFFER *buf0, BUFFER *buf1);
 

@@ -106,10 +106,12 @@ BOOLEAN BUF_ToFile(BUFFER *buf, CHAR *path, BOOLEAN append) {
 // If zero, malloc; if equal to capacity, realloc; otherwise do nothing
 static inline BOOLEAN BUF_ResizeUp(BUFFER *buf) {
 	if (!buf->len) {
-		if (!(buf->data = malloc(UI8_SIZE))) { return FALSE; }
+		if (!(buf->data = malloc(UI8_SIZE))) {
+			buf->len = 0; buf->cap = 1; return FALSE;
+		}
 	} else if (buf->len == buf->cap) {
 		buf->data = realloc(buf->data, UI8_SIZE * (buf->cap <<= 1));
-		if (!buf->data) { return FALSE; }
+		if (!buf->data) { buf->len = 0; buf->cap = 1; return FALSE; }
 	}
 	return TRUE;
 }
@@ -120,7 +122,7 @@ static inline BOOLEAN BUF_ResizeDown(BUFFER *buf) {
 		free(buf->data); buf->data = NULL;
 	} else if (buf->len == (buf->cap >> 1)) {
 		buf->data = realloc(buf->data, UI8_SIZE * (buf->cap >>= 1));
-		if (!buf->data) { return FALSE; }
+		if (!buf->data) { buf->len = 0; buf->cap = 1; return FALSE; }
 	}
 	return TRUE;
 }
@@ -207,10 +209,10 @@ SI8 BUF_Compare(BUFFER *buf0, BUFFER *buf1) {
 	if (!buf0 || !buf1 || !buf0->data || !buf1->data) { return SI8_MIN; }
 	UI64 limit = MIN(buf0->len, buf1->len);
 	for (UI64 i = 0; i < limit; ++i) {
-		if (buf0->data[i] < buf1->data[i]) { return -1; }
-		else if (buf0->data[i] > buf1->data[i]) { return 1; }
+		if (buf0->data[i] > buf1->data[i]) { return -1; }
+		else if (buf0->data[i] < buf1->data[i]) { return 1; }
 	}
-	return buf0->len < buf1->len ? -1 : buf0->len > buf1->len;
+	return buf0->len > buf1->len ? -1 : buf0->len < buf1->len;
 }
 
 VOID BUF_PrintBin(BUFFER *buf) {
