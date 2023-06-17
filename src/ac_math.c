@@ -1,3 +1,5 @@
+// Public domain (PD)
+
 #include "ac_math.h"
 
 UI64 SeedIter = 0;
